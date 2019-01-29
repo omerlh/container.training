@@ -215,61 +215,9 @@ Images contain all the libraries, dependencies, etc. needed to run the app.
 
 class: extra-details
 
-## Decouple "plumbing" from application logic
-
-1. Write your code to connect to named services ("db", "api"...)
-
-2. Use Compose to start your stack
-
-3. Docker will setup per-container DNS resolver for those names
-
-4. You can now scale, add load balancers, replication ... without changing your code
-
-Note: this is not covered in this intro level workshop!
-
----
-
-class: extra-details
-
 ## What did Docker bring to the table?
 
 ### Docker before/after
-
----
-
-class: extra-details
-
-## Formats and APIs, before Docker
-
-* No standardized exchange format.
-  <br/>(No, a rootfs tarball is *not* a format!)
-
-* Containers are hard to use for developers.
-  <br/>(Where's the equivalent of `docker run debian`?)
-
-* As a result, they are *hidden* from the end users.
-
-* No re-usable components, APIs, tools.
-  <br/>(At best: VM abstractions, e.g. libvirt.)
-
-Analogy: 
-
-* Shipping containers are not just steel boxes.
-* They are steel boxes that are a standard size, with the same hooks and holes.
-
----
-
-class: extra-details
-
-## Formats and APIs, after Docker
-
-* Standardize the container format, because containers were not portable.
-
-* Make containers easy to use for developers.
-
-* Emphasis on re-usable components, APIs, ecosystem of standard tools.
-
-* Improvement over ad-hoc, in-house, specific tools.
 
 ---
 
@@ -318,19 +266,15 @@ Layers:
 
 class: extra-details
 
-## Devs vs Ops, before Docker
+## Devs vs Production, before Docker
 
 * Drop a tarball (or a commit hash) with instructions.
 
 * Dev environment very different from production.
 
-* Ops don't always have a dev environment themselves ...
+* Have to sort out differences and make it work ...
 
-* ... and when they do, it can differ from the devs'.
-
-* Ops have to sort out differences and make it work ...
-
-* ... or bounce it back to devs.
+* ... or bounce it back.
 
 * Shipping code causes frictions and delays.
 
@@ -338,19 +282,11 @@ class: extra-details
 
 class: extra-details
 
-## Devs vs Ops, after Docker
+## Devs vs Production, after Docker
 
-* Drop a container image or a Compose file.
+* Drop a container image.
 
-* Ops can always run that container image.
+* Run that container image.
 
-* Ops can always run that Compose file.
-
-* Ops still have to adapt to prod environment,
-  but at least they have a reference point.
-
-* Ops have tools allowing to use the same image
-  in dev and prod.
-
-* Devs can be empowered to make releases themselves
+* Empowered to make releases themselves
   more easily.

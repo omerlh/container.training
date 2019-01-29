@@ -1,0 +1,22 @@
+title: |
+  Introduction
+  to Containers
+
+chat: "[Slack](https://dockercommunity.slack.com/messages/C7GKACWDV)"
+#chat: "[Gitter](https://gitter.im/jpetazzo/workshop-yyyymmdd-city)"
+
+gitrepo: github.com/jpetazzo/container.training
+
+slides: http://container.training/
+
+exclude:
+- self-paced
+
+chapters:
+- shared/title.md
+- shared/about-slides.md
+- shared/toc.md
+- - containers/Docker_Overview.md
+  - containers/First_Containers.md
+- - containers/Initial_Images.md
+  - containers/Local_Development_Workflow.md
