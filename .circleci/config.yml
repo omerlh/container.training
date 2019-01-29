@@ -15,6 +15,7 @@ jobs:
             ./build.sh once
             cp *.html output/
             cp *.css output/
+            cp *.js output/
             cp -r images/ output/
       - persist_to_workspace:
           root: slides/output/
