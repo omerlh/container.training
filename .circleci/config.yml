@@ -21,6 +21,7 @@ jobs:
           paths: 
             - "*.html"
             - "*.css"
+            - "*.js"
             - "images/"
 
   gh-deploy:
