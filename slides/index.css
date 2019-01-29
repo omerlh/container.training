@@ -43,7 +43,7 @@ a {
     text-decoration: none;
 }
 a:hover {
-    background: yellow;
+    background: "yellow";
 }
 a.attend:after {
     content: "📅 attend";
