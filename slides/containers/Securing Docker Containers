@@ -1,0 +1,44 @@
+# Securing Docker Containers
+
+In this lesson, we will learn how to build a more secure docker container. 
+After all, our code is going to run inside this container - so it is better to make sure it is secure.
+
+* Scanning docker images
+* Installing security updates
+* Do not run container as root
+---
+
+## What's inside an image?
+
+* Our code is running inside a docker container
+* What's inside the container besides our code? Let's check!
+
+```bash
+docker run -it ubuntu dpkg -l 
+<long list of packages>
+```
+
+* `dpkg -l` lists the packages installed in our container
+
+WOW! That's a lot of packages - and all come pre-installed in the image we used.
+Can we trust this packages?
+
+---
+
+## Packages Scan
+
+* Docker image can contains a lot of packages that come installed with it.
+* Each one could contains known vulnerabilities (example - ["Heartbleed"](http://heartbleed.com/))
+* That's why we need to scan all the packages (See [OWASP Top 10 A9](https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities))
+
+---
+
+## Tools for Scanning Packages inside Docker Images
+There are a few opensource tools available out there, including [Anchore Engine](https://github.com/anchore/anchore-engine) and [Clair](https://github.com/coreos/clair).
+In this workshop we try a comerical tool, [Snyk](https://snyk.io) which is easier to setup.
+
+Let's scan our image with Snyk (install the [CLI first](https://snyk.io/docs/using-snyk/))!
+```bash
+snyk test --docker ubuntu
+<long list of vulnerabilties>
+```
