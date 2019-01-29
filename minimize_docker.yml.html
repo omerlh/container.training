@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Introduction to Containers </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="workshop.css">
+  </head>
+  <body>
+    <!--
+    <div style="position: absolute; left: 20%; right: 20%; top: 30%;">
+      <h1 style="font-size: 3em;">Loading ...</h1>
+      The slides should show up here. If they don't, it might be
+      because you are accessing this file directly from your filesystem.
+      It needs to be served from a web server. You can try this:
+      <pre>
+        docker-compose up -d
+        open http://localhost:8888/workshop.html # on MacOS
+        xdg-open http://localhost:8888/workshop.html # on Linux
+      </pre>
+      Once the slides are loaded, this notice disappears when you
+      go full screen (e.g. by hitting "f").
+    </div>
+    -->
+    <textarea id="source">class: title, self-paced
+
+Introduction<br/>to Containers<br/>
+
+.nav[*Self-paced version*]
+
+.debug[
+```
+
+```
+
+These slides have been built from commit: 35cbb7b
+
+
+[shared/title.md](https://github.com/omerlh/container.training.git/tree/master/slides/shared/title.md)]
+---
+
+class: title, in-person
+
+Introduction<br/>to Containers<br/><br/></br>
+
+.footnote[
+**Be kind to the WiFi!**<br/>
+<!-- *Use the 5G network.* -->
+*Don't use your hotspot.*<br/>
+*Don't stream videos or download big files during the workshop[.](https://www.youtube.com/watch?v=h16zyxiwDLY)*<br/>
+*Thank you!*
+
+**Slides: http://container.training/**
+]
+
+.debug[[shared/title.md](https://github.com/omerlh/container.training.git/tree/master/slides/shared/title.md)]
+---
+## About these slides
+
+- All the content is available in a public GitHub repository:
+
+  https://github.com/jpetazzo/container.training
+
+- You can get updated "builds" of the slides there:
+
+  http://container.training/
+
+<!--
+.exercise[
+```open https://github.com/jpetazzo/container.training```
+```open http://container.training/```
+]
+-->
+
+--
+
+- Typos? Mistakes? Questions? Feel free to hover over the bottom of the slide ...
+
+.footnote[.emoji[👇] Try it! The source file will be shown and you can view it on GitHub and fork and edit it.]
+
+<!--
+.exercise[
+```open https://github.com/jpetazzo/container.training/tree/master/slides/common/about-slides.md```
+]
+-->
+
+.debug[[shared/about-slides.md](https://github.com/omerlh/container.training.git/tree/master/slides/shared/about-slides.md)]
+---
+
+class: extra-details
+
+## Extra details
+
+- This slide has a little magnifying glass in the top left corner
+
+- This magnifying glass indicates slides that provide extra details
+
+- Feel free to skip them if:
+
+  - you are in a hurry
+
+  - you are new to this and want to avoid cognitive overload
+
+  - you want only the most essential information
+
+- You can review these slides another time if you want, they'll be waiting for you ☺
+
+.debug[[shared/about-slides.md](https://github.com/omerlh/container.training.git/tree/master/slides/shared/about-slides.md)]
+---
+
+name: toc-chapter-1
+
+## Chapter 1
+
+- [Docker 30,000ft overview](#toc-docker-ft-overview)
+
+- [Our first containers](#toc-our-first-containers)
+
+.debug[(auto-generated TOC)]
+---
+name: toc-chapter-2
+
+## Chapter 2
+
+- [Understanding Docker images](#toc-understanding-docker-images)
+
+- [Local development workflow with Docker](#toc-local-development-workflow-with-docker)
+
+.debug[(auto-generated TOC)]
+
+
+
+.debug[[shared/toc.md](https://github.com/omerlh/container.training.git/tree/master/slides/shared/toc.md)]
+---
+
+class: pic
+
+.interstitial[![Image separating from the next chapter](https://gallant-turing-d0d520.netlify.com/containers/Container-Ship-Freighter-Navigation-Elbe-Romance-1782991.jpg)]
+
+---
+
+name: toc-docker-ft-overview
+class: title
+
+Docker 30,000ft overview
+
+.nav[
+[Previous section](#toc-)
+|
+[Back to table of contents](#toc-chapter-1)
+|
+[Next section](#toc-our-first-containers)
+]
+
+.debug[(automatically generated title slide)]
+
+---
+# Docker 30,000ft overview
+
+In this lesson, we will learn about:
+
+* Why containers (non-technical elevator pitch)
+
+* Why containers (technical elevator pitch)
+
+* How Docker helps us to build, ship, and run
+
+* The history of containers
+
+We won't actually run Docker or containers in this chapter (yet!).
+
+Don't worry, we will get to that fast enough!
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## Elevator pitch
+
+### (for your manager, your boss...)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## OK... Why the buzz around containers?
+
+* The software industry has changed
+
+* Before:
+  * monolithic applications
+  * long development cycles
+  * single environment
+  * slowly scaling up
+
+* Now:
+  * decoupled services
+  * fast, iterative improvements
+  * multiple environments
+  * quickly scaling out
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## Deployment becomes very complex
+
+* Many different stacks:
+  * languages
+  * frameworks
+  * databases
+
+* Many different targets:
+  * individual development environments
+  * pre-production, QA, staging...
+  * production: on prem, cloud, hybrid
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## The deployment problem
+
+![problem](images/shipping-software-problem.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## The matrix from hell
+
+![matrix](images/shipping-matrix-from-hell.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## The parallel with the shipping industry
+
+![history](images/shipping-industry-problem.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## Intermodal shipping containers
+
+![shipping](images/shipping-industry-solution.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## A new shipping ecosystem
+
+![shipeco](images/shipping-indsutry-results.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## A shipping container system for applications
+
+![shipapp](images/shipping-software-solution.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+## Eliminate the matrix from hell
+
+![elimatrix](images/shipping-matrix-solved.png)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## Results
+
+* [Dev-to-prod reduced from 9 months to 15 minutes (ING)](
+  https://www.docker.com/sites/default/files/CS_ING_01.25.2015_1.pdf)
+
+* [Continuous integration job time reduced by more than 60% (BBC)](
+  https://www.docker.com/sites/default/files/CS_BBCNews_01.25.2015_1.pdf)
+
+* [Deploy 100 times a day instead of once a week (GILT)](
+  https://www.docker.com/sites/default/files/CS_Gilt%20Groupe_03.18.2015_0.pdf)
+
+* [70% infrastructure consolidation (MetLife)](
+  https://www.docker.com/customers/metlife-transforms-customer-experience-legacy-and-microservices-mashup)
+
+* [60% infrastructure consolidation (Intesa Sanpaolo)](
+  https://blog.docker.com/2017/11/intesa-sanpaolo-builds-resilient-foundation-banking-docker-enterprise-edition/)
+
+* [14x application density; 60% of legacy datacenter migrated in 4 months (GE Appliances)](
+  https://www.docker.com/customers/ge-uses-docker-enable-self-service-their-developers)
+
+* etc.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## Elevator pitch
+
+### (for your fellow devs and ops)
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## Escape dependency hell
+
+1. Write installation instructions into an `INSTALL.txt` file
+
+2. Using this file, write an `install.sh` script that works *for you*
+
+3. Turn this file into a `Dockerfile`, test it on your machine
+
+4. If the Dockerfile builds on your machine, it will build *anywhere*
+
+5. Rejoice as you escape dependency hell and "works on my machine"
+
+Never again "worked in dev - ops problem now!"
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+## On-board developers and contributors rapidly
+
+1. Write Dockerfiles for your application components
+
+2. Use pre-made images from the Docker Hub (mysql, redis...)
+
+3. Describe your stack with a Compose file
+
+4. On-board somebody with two commands:
+
+```bash
+git clone ...
+docker-compose up
+```
+
+With this, you can create development, integration, QA environments in minutes!
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Implement reliable CI easily
+
+1. Build test environment with a Dockerfile or Compose file
+
+2. For each test run, stage up a new container or stack
+
+3. Each run is now in a clean environment
+
+4. No pollution from previous tests
+
+Way faster and cheaper than creating VMs each time!
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Use container images as build artefacts
+
+1. Build your app from Dockerfiles
+
+2. Store the resulting images in a registry
+
+3. Keep them forever (or as long as necessary)
+
+4. Test those images in QA, CI, integration...
+
+5. Run the same images in production
+
+6. Something goes wrong? Rollback to previous image
+
+7. Investigating old regression? Old image has your back!
+
+Images contain all the libraries, dependencies, etc. needed to run the app.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## What did Docker bring to the table?
+
+### Docker before/after
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Shipping, before Docker
+
+* Ship packages: deb, rpm, gem, jar, homebrew...
+
+* Dependency hell.
+
+* "Works on my machine."
+
+* Base deployment often done from scratch (debootstrap...) and unreliable.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Shipping, after Docker
+
+* Ship container images with all their dependencies.
+
+* Images are bigger, but they are broken down into layers.
+
+* Only ship layers that have changed.
+
+* Save disk, network, memory usage.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Example
+
+Layers:
+
+* CentOS
+* JRE
+* Tomcat
+* Dependencies
+* Application JAR
+* Configuration
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Devs vs Production, before Docker
+
+* Drop a tarball (or a commit hash) with instructions.
+
+* Dev environment very different from production.
+
+* Have to sort out differences and make it work ...
+
+* ... or bounce it back.
+
+* Shipping code causes frictions and delays.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: extra-details
+
+## Devs vs Production, after Docker
+
+* Drop a container image.
+
+* Run that container image.
+
+* Empowered to make releases themselves
+  more easily.
+
+.debug[[containers/Docker_Overview.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Docker_Overview.md)]
+---
+
+class: pic
+
+.interstitial[![Image separating from the next chapter](https://gallant-turing-d0d520.netlify.com/containers/ShippingContainerSFBay.jpg)]
+
+---
+
+name: toc-our-first-containers
+class: title
+
+Our first containers
+
+.nav[
+[Previous section](#toc-docker-ft-overview)
+|
+[Back to table of contents](#toc-chapter-1)
+|
+[Next section](#toc-understanding-docker-images)
+]
+
+.debug[(automatically generated title slide)]
+
+---
+
+class: title
+
+# Our first containers
+
+![Colorful plastic tubs](images/title-our-first-containers.jpg)
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Objectives
+
+At the end of this lesson, you will have:
+
+* Seen Docker in action.
+
+* Started your first containers.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Hello World
+
+In your Docker environment, just run the following command:
+
+```bash
+$ docker run busybox echo hello world
+hello world
+```
+
+(If your Docker install is brand new, you will also see a few extra lines,
+corresponding to the download of the `busybox` image.)
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## That was our first container!
+
+* We used one of the smallest, simplest images available: `busybox`.
+
+* `busybox` is typically used in embedded systems (phones, routers...)
+
+* We ran a single process and echo'ed `hello world`.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## A more useful container
+
+Let's run a more exciting container:
+
+```bash
+$ docker run -it ubuntu
+root@04c0bb0a6c07:/#
+```
+
+* This is a brand new container.
+
+* It runs a bare-bones, no-frills `ubuntu` system.
+
+* `-it` is shorthand for `-i -t`.
+
+  * `-i` tells Docker to connect us to the container's stdin.
+
+  * `-t` tells Docker that we want a pseudo-terminal.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Do something in our container
+
+Try to run `figlet` in our container.
+
+```bash
+root@04c0bb0a6c07:/# figlet hello
+bash: figlet: command not found
+```
+
+Alright, we need to install it.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Install a package in our container
+
+We want `figlet`, so let's install it:
+
+```bash
+root@04c0bb0a6c07:/# apt-get update
+...
+Fetched 1514 kB in 14s (103 kB/s)
+Reading package lists... Done
+root@04c0bb0a6c07:/# apt-get install figlet
+Reading package lists... Done
+...
+```
+
+One minute later, `figlet` is installed!
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Try to run our freshly installed program
+
+The `figlet` program takes a message as parameter.
+
+```bash
+root@04c0bb0a6c07:/# figlet hello
+ _          _ _       
+| |__   ___| | | ___  
+| '_ \ / _ \ | |/ _ \ 
+| | | |  __/ | | (_) |
+|_| |_|\___|_|_|\___/ 
+```
+
+Beautiful! .emoji[😍]
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+class: in-person
+
+## Counting packages in the container
+
+Let's check how many packages are installed there.
+
+```bash
+root@04c0bb0a6c07:/# dpkg -l | wc -l
+190
+```
+
+* `dpkg -l` lists the packages installed in our container
+
+* `wc -l` counts them
+
+How many packages do we have on our host?
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+class: in-person
+
+## Counting packages on the host
+
+Exit the container by logging out of the shell, like you would usually do.
+
+(E.g. with `^D` or `exit`)
+
+```bash
+root@04c0bb0a6c07:/# exit
+```
+
+Now, try to:
+
+* run `dpkg -l | wc -l`. How many packages are installed?
+
+* run `figlet`. Does that work?
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+class: self-paced
+
+## Comparing the container and the host
+
+Exit the container by logging out of the shell, with `^D` or `exit`.
+
+Now try to run `figlet`. Does that work?
+
+(It shouldn't; except if, by coincidence, you are running on a machine where figlet was installed before.)
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Host and containers are independent things
+
+* We ran an `ubuntu` container on an Linux/Windows/macOS host.
+
+* They have different, independent packages.
+
+* Installing something on the host doesn't expose it to the container.
+
+* And vice-versa.
+
+* Even if both the host and the container have the same Linux distro!
+
+* We can run *any container* on *any host*.
+
+  (One exception: Windows containers cannot run on Linux machines; at least not yet.)
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Where's our container?
+
+* Our container is now in a *stopped* state.
+
+* It still exists on disk, but all compute resources have been freed up.
+
+* We will see later how to get back to that container.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+## Starting another container
+
+What if we start a new container, and try to run `figlet` again?
+ 
+```bash
+$ docker run -it ubuntu
+root@b13c164401fb:/# figlet
+bash: figlet: command not found
+```
+
+* We started a *brand new container*.
+
+* The basic Ubuntu image was used, and `figlet` is not here.
+
+* We will see in the next chapters how to bake a custom image with `figlet`.
+
+.debug[[containers/First_Containers.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/First_Containers.md)]
+---
+
+class: pic
+
+.interstitial[![Image separating from the next chapter](https://gallant-turing-d0d520.netlify.com/containers/aerial-view-of-containers.jpg)]
+
+---
+
+name: toc-understanding-docker-images
+class: title
+
+Understanding Docker images
+
+.nav[
+[Previous section](#toc-our-first-containers)
+|
+[Back to table of contents](#toc-chapter-2)
+|
+[Next section](#toc-local-development-workflow-with-docker)
+]
+
+.debug[(automatically generated title slide)]
+
+---
+
+class: title
+
+# Understanding Docker images
+
+![image](images/title-understanding-docker-images.png)
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Objectives
+
+In this section, we will explain:
+
+* What is an image.
+
+* What is a layer.
+
+* The various image namespaces.
+
+* How to search and download images.
+
+* Image tags and when to use them.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## What is an image?
+
+* Image = files + metadata
+
+* These files form the root filesystem of our container.
+
+* The metadata can indicate a number of things, e.g.:
+
+  * the author of the image
+  * the command to execute in the container when starting it
+  * environment variables to be set
+  * etc.
+
+* Images are made of *layers*, conceptually stacked on top of each other.
+
+* Each layer can add, change, and remove files and/or metadata.
+
+* Images can share layers to optimize disk usage, transfer times, and memory use.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Example for a Java webapp
+
+Each of the following items will correspond to one layer:
+
+* CentOS base layer
+* Packages and configuration files added by our local IT
+* JRE
+* Tomcat
+* Our application's dependencies
+* Our application code and assets
+* Our application configuration
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+class: pic
+
+## The read-write layer
+
+![layers](images/container-layers.jpg)
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Differences between containers and images
+
+* An image is a read-only filesystem.
+
+* A container is an encapsulated set of processes running in a
+  read-write copy of that filesystem.
+
+* To optimize container boot time, *copy-on-write* is used
+  instead of regular copy.
+
+* `docker run` starts a container from a given image.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+class: pic
+
+## Multiple containers sharing the same image
+
+![layers](images/sharing-layers.jpg)
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Comparison with object-oriented programming
+
+* Images are conceptually similar to *classes*.
+
+* Layers are conceptually similar to *inheritance*.
+
+* Containers are conceptually similar to *instances*.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Wait a minute...
+
+If an image is read-only, how do we change it?
+
+* We don't.
+
+* We create a new container from that image.
+
+* Then we make changes to that container.
+
+* When we are satisfied with those changes, we transform them into a new layer.
+
+* A new image is created by stacking the new layer on top of the old image.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## A chicken-and-egg problem
+
+* The only way to create an image is by "freezing" a container.
+
+* The only way to create a container is by instantiating an image.
+
+* Help!
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Creating the first images
+
+There is a special empty image called `scratch`.
+
+* It allows to *build from scratch*.
+
+The `docker import` command loads a tarball into Docker.
+
+* The imported tarball becomes a standalone image.
+* That new image has a single layer.
+
+Note: you will probably never have to do this yourself.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Creating other images
+
+`docker commit`
+
+* Saves all the changes made to a container into a new layer.
+* Creates a new image (effectively a copy of the container).
+
+`docker build` **(used 99% of the time)**
+
+* Performs a repeatable build sequence.
+* This is the preferred method!
+
+We will explain both methods in a moment.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Images namespaces
+
+There are three namespaces:
+
+* Official images
+
+    e.g. `ubuntu`, `busybox` ...
+
+* User (and organizations) images
+
+    e.g. `jpetazzo/clock`
+
+* Self-hosted images
+
+    e.g. `registry.example.com:5000/my-private/image`
+
+Let's explain each of them.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Root namespace
+
+The root namespace is for official images. They are put there by Docker Inc.,
+but they are generally authored and maintained by third parties.
+
+Those images include:
+
+* Small, "swiss-army-knife" images like busybox.
+
+* Distro images to be used as bases for your builds, like ubuntu, fedora...
+
+* Ready-to-use components and services, like redis, postgresql...
+
+* Over 130 at this point!
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## User namespace
+
+The user namespace holds images for Docker Hub users and organizations.
+
+For example:
+
+```bash
+jpetazzo/clock
+```
+
+The Docker Hub user is:
+
+```bash
+jpetazzo
+```
+
+The image name is:
+
+```bash
+clock
+```
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Self-hosted namespace
+
+This namespace holds images which are not hosted on Docker Hub, but on third
+party registries.
+
+They contain the hostname (or IP address), and optionally the port, of the
+registry server.
+
+For example:
+
+```bash
+localhost:5000/wordpress
+```
+
+* `localhost:5000` is the host and port of the registry
+* `wordpress` is the name of the image
+
+Other examples:
+
+```bash
+quay.io/coreos/etcd
+gcr.io/google-containers/hugo
+```
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## How do you store and manage images?
+
+Images can be stored:
+
+* On your Docker host.
+* In a Docker registry.
+
+You can use the Docker client to download (pull) or upload (push) images.
+
+To be more accurate: you can use the Docker client to tell a Docker Engine
+to push and pull images to and from a registry.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Showing current images
+
+Let's look at what images are on our host now.
+
+```bash
+$ docker images
+REPOSITORY       TAG       IMAGE ID       CREATED         SIZE
+fedora           latest    ddd5c9c1d0f2   3 days ago      204.7 MB
+centos           latest    d0e7f81ca65c   3 days ago      196.6 MB
+ubuntu           latest    07c86167cdc4   4 days ago      188 MB
+redis            latest    4f5f397d4b7c   5 days ago      177.6 MB
+postgres         latest    afe2b5e1859b   5 days ago      264.5 MB
+alpine           latest    70c557e50ed6   5 days ago      4.798 MB
+debian           latest    f50f9524513f   6 days ago      125.1 MB
+busybox          latest    3240943c9ea3   2 weeks ago     1.114 MB
+training/namer   latest    902673acc741   9 months ago    289.3 MB
+jpetazzo/clock   latest    12068b93616f   12 months ago   2.433 MB
+```
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Searching for images
+
+We cannot list *all* images on a remote registry, but
+we can search for a specific keyword:
+
+```bash
+$ docker search marathon
+NAME                     DESCRIPTION                     STARS  OFFICIAL  AUTOMATED
+mesosphere/marathon      A cluster-wide init and co...   105              [OK]
+mesoscloud/marathon      Marathon                        31               [OK]
+mesosphere/marathon-lb   Script to update haproxy b...   22               [OK]
+tobilg/mongodb-marathon  A Docker image to start a ...   4                [OK]
+```
+
+
+* "Stars" indicate the popularity of the image.
+
+* "Official" images are those in the root namespace.
+
+* "Automated" images are built automatically by the Docker Hub.
+  <br/>(This means that their build recipe is always available.)
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Downloading images
+
+There are two ways to download images.
+
+* Explicitly, with `docker pull`.
+
+* Implicitly, when executing `docker run` and the image is not found locally.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Pulling an image
+
+```bash
+$ docker pull debian:jessie
+Pulling repository debian
+b164861940b8: Download complete
+b164861940b8: Pulling image (jessie) from debian
+d1881793a057: Download complete
+```
+
+* As seen previously, images are made up of layers.
+
+* Docker has downloaded all the necessary layers.
+
+* In this example, `:jessie` indicates which exact version of Debian
+  we would like.
+
+  It is a *version tag*.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Image and tags
+
+* Images can have tags.
+
+* Tags define image versions or variants.
+
+* `docker pull ubuntu` will refer to `ubuntu:latest`.
+
+* The `:latest` tag is generally updated often.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## When to (not) use tags
+
+Don't specify tags:
+
+* When doing rapid testing and prototyping.
+* When experimenting.
+* When you want the latest version.
+
+Do specify tags:
+
+* When recording a procedure into a script.
+* When going to production.
+* To ensure that the same version will be used everywhere.
+* To ensure repeatability later.
+
+This is similar to what we would do with `pip install`, `npm install`, etc.
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+## Section summary
+
+We've learned how to:
+
+* Understand images and layers.
+* Understand Docker image namespacing.
+* Search and download images.
+
+
+.debug[[containers/Initial_Images.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Initial_Images.md)]
+---
+
+class: pic
+
+.interstitial[![Image separating from the next chapter](https://gallant-turing-d0d520.netlify.com/containers/blue-containers.jpg)]
+
+---
+
+name: toc-local-development-workflow-with-docker
+class: title
+
+Local development workflow with Docker
+
+.nav[
+[Previous section](#toc-understanding-docker-images)
+|
+[Back to table of contents](#toc-chapter-2)
+|
+[Next section](#toc-)
+]
+
+.debug[(automatically generated title slide)]
+
+---
+
+class: title
+
+# Local development workflow with Docker
+
+![Construction site](images/title-local-development-workflow-with-docker.jpg)
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Objectives
+
+At the end of this section, you will be able to:
+
+* Share code between container and host.
+
+* Use a simple local development workflow.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Local development in a container
+
+We want to solve the following issues:
+
+- "Works on my machine"
+
+- "Not the same version"
+
+- "Missing dependency"
+
+By using Docker containers, we will get a consistent development environment.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Working on the "namer" application
+
+* We have to work on some application whose code is at:
+
+  https://github.com/jpetazzo/namer.
+
+* What is it? We don't know yet!
+
+* Let's download the code.
+
+```bash
+$ git clone https://github.com/jpetazzo/namer
+```
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Looking at the code
+
+```bash
+$ cd namer
+$ ls -1
+company_name_generator.rb
+config.ru
+docker-compose.yml
+Dockerfile
+Gemfile
+```
+
+--
+
+Aha, a `Gemfile`! This is Ruby. Probably. We know this. Maybe?
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Looking at the `Dockerfile`
+
+```dockerfile
+FROM ruby
+
+COPY . /src
+WORKDIR /src
+RUN bundler install
+
+CMD ["rackup", "--host", "0.0.0.0"]
+EXPOSE 9292
+```
+
+* This application is using a base `ruby` image.
+* The code is copied in `/src`.
+* Dependencies are installed with `bundler`.
+* The application is started with `rackup`.
+* It is listening on port 9292.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Building and running the "namer" application
+
+* Let's build the application with the `Dockerfile`!
+
+--
+
+```bash
+$ docker build -t namer .
+```
+
+--
+
+* Then run it. *We need to expose its ports.*
+
+--
+
+```bash
+$ docker run -dP namer
+```
+
+--
+
+* Check on which port the container is listening.
+
+--
+
+```bash
+$ docker ps -l
+```
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Connecting to our application
+
+* Point our browser to our Docker node, on the port allocated to the container.
+
+--
+
+* Hit "reload" a few times.
+
+--
+
+* This is an enterprise-class, carrier-grade, ISO-compliant company name generator!
+
+  (With 50% more bullshit than the average competition!)
+
+  (Wait, was that 50% more, or 50% less? *Anyway!*)
+
+  ![web application 1](images/webapp-in-blue.png)
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Making changes to the code
+
+Option 1:
+
+* Edit the code locally
+* Rebuild the image
+* Re-run the container
+
+Option 2:
+
+* Enter the container (with `docker exec`)
+* Install an editor
+* Make changes from within the container
+
+Option 3:
+
+* Use a *volume* to mount local files into the container
+* Make changes locally
+* Changes are reflected into the container
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Our first volume
+
+We will tell Docker to map the current directory to `/src` in the container.
+
+```bash
+$ docker run -d -v $(pwd):/src -P namer
+```
+
+* `-d`: the container should run in detached mode (in the background).
+
+* `-v`: the following host directory should be mounted inside the container.
+
+* `-P`: publish all the ports exposed by this image.
+
+* `namer` is the name of the image we will run.
+
+* We don't specify a command to run because it is already set in the Dockerfile.
+
+Note: on Windows, replace `$(pwd)` with `%cd%` (or `${pwd}` if you use PowerShell).
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Mounting volumes inside containers
+
+The `-v` flag mounts a directory from your host into your Docker container.
+
+The flag structure is:
+
+```bash
+[host-path]:[container-path]:[rw|ro]
+```
+
+* If `[host-path]` or `[container-path]` doesn't exist it is created.
+
+* You can control the write status of the volume with the `ro` and
+  `rw` options.
+
+* If you don't specify `rw` or `ro`, it will be `rw` by default.
+
+There will be a full chapter about volumes!
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Testing the development container
+
+* Check the port used by our new container.
+
+```bash
+$ docker ps -l
+CONTAINER ID  IMAGE  COMMAND  CREATED        STATUS  PORTS                   NAMES
+045885b68bc5  namer  rackup   3 seconds ago  Up ...  0.0.0.0:32770->9292/tcp ...
+```
+
+* Open the application in your web browser.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Making a change to our application
+
+Our customer really doesn't like the color of our text. Let's change it.
+
+```bash
+$ vi company_name_generator.rb
+```
+
+And change
+
+```css
+color: royalblue;
+```
+
+To:
+
+```css
+color: red;
+```
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Viewing our changes
+
+* Reload the application in our browser.
+
+--
+
+* The color should have changed.
+
+  ![web application 2](images/webapp-in-red.png)
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Understanding volumes
+
+* Volumes are *not* copying or synchronizing files between the host and the container.
+
+* Volumes are *bind mounts*: a kernel mechanism associating a path to another.
+
+* Bind mounts are *kind of* similar to symbolic links, but at a very different level.
+
+* Changes made on the host or on the container will be visible on the other side.
+
+  (Since under the hood, it's the same file on both anyway.)
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Trash your servers and burn your code
+
+*(This is the title of a
+[2013 blog post](http://chadfowler.com/2013/06/23/immutable-deployments.html)
+by Chad Fowler, where he explains the concept of immutable infrastructure.)*
+
+--
+
+* Let's mess up majorly with our container.
+
+  (Remove files or whatever.)
+
+* Now, how can we fix this?
+
+--
+
+* Our old container (with the blue version of the code) is still running.
+
+* See on which port it is exposed:
+  ```bash
+  docker ps
+  ```
+
+* Point our browser to it to confirm that it still works fine.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Immutable infrastructure in a nutshell
+
+* Instead of *updating* a server, we deploy a new one.
+
+* This might be challenging with classical servers, but it's trivial with containers.
+
+* In fact, with Docker, the most logical workflow is to build a new image and run it.
+
+* If something goes wrong with the new image, we can always restart the old one.
+
+* We can even keep both versions running side by side.
+
+If this pattern sounds interesting, you might want to read about *blue/green deployment*
+and *canary deployments*.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Recap of the development workflow
+
+1. Write a Dockerfile to build an image containing our development environment.
+   <br/>
+   (Rails, Django, ... and all the dependencies for our app)
+
+2. Start a container from that image.
+   <br/>
+   Use the `-v` flag to mount our source code inside the container.
+
+3. Edit the source code outside the containers, using regular tools.
+   <br/>
+   (vim, emacs, textmate...)
+
+4. Test the application.
+   <br/>
+   (Some frameworks pick up changes automatically.
+   <br/>Others require you to Ctrl-C + restart after each modification.)
+
+5. Iterate and repeat steps 3 and 4 until satisfied.
+
+6. When done, commit+push source code changes.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+class: extra-details
+
+## Debugging inside the container
+
+Docker has a command called `docker exec`.
+
+It allows users to run a new process in a container which is already running.
+
+If sometimes you find yourself wishing you could SSH into a container: you can use `docker exec` instead.
+
+You can get a shell prompt inside an existing container this way, or run an arbitrary process for automation.
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+class: extra-details
+
+## `docker exec` example
+
+```bash
+$ # You can run ruby commands in the area the app is running and more!
+$ docker exec -it <yourContainerId> bash
+root@5ca27cf74c2e:/opt/namer# irb
+irb(main):001:0> [0, 1, 2, 3, 4].map {|x| x ** 2}.compact
+=> [0, 1, 4, 9, 16]
+irb(main):002:0> exit
+```
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+class: extra-details
+
+## Stopping the container
+
+Now that we're done let's stop our container.
+
+```bash
+$ docker stop <yourContainerID>
+```
+
+And remove it.
+
+```bash
+$ docker rm <yourContainerID>
+```
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]
+---
+
+## Section summary
+
+We've learned how to:
+
+* Share code between container and host.
+
+* Set our working directory.
+
+* Use a simple local development workflow.
+
+
+.debug[[containers/Local_Development_Workflow.md](https://github.com/omerlh/container.training.git/tree/master/slides/containers/Local_Development_Workflow.md)]</textarea>
+    <script src="remark.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create({
+        ratio: '16:9',
+        highlightSpans: true,
+        excludedClasses: ["self-paced"]
+      });
+    </script>
+    
+    <!-- 
+    These two scripts will be available only when loading the
+    content using the pub/sub server. Otherwise, they'll just
+    404 and that's OK.
+    -->
+    <script src="/socket.io/socket.io.js">
+    </script>
+    <script src="/remote.js">
+    </script>
+
+  </body>
+</html>
