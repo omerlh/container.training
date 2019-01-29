@@ -39,3 +39,21 @@ td.title {
     padding-bottom: 2px;
     padding-top: 20px;
 }
+a {
+    text-decoration: none;
+}
+a:hover {
+    background: "yellow";
+}
+a.attend:after {
+    content: "📅 attend";
+}
+a.slides:after {
+    content: "📚 slides";
+}
+a.chat:after {
+    content: "💬 chat";
+}
+a.video:after {
+    content: "📺 video";
+}
